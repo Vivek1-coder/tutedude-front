@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -15,11 +16,6 @@ import {
 } from "@/components/ui/card";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
-// interface LoginForm {
-//   email: string;
-//   password: string;
-// }
-
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -27,10 +23,38 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  const onSubmit = async (data) => {
+    // setError(null);
 
-  const onSubmit = (data) => {
-    console.log("Login data:", data);
-    // Handle login logic here
+    try {
+      const res = await fetch("/api/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        // Backend returned a 4xx/5xx
+        // setError(json.error || "Signin failed");
+        return;
+      }
+
+      // Success: you now have { id, name, email } in json
+      // (token was set as HttpOnly cookie by the route)
+
+      // OPTIONAL: update client-side auth state/context here
+      // e.g. authContext.setUser({ id: json.id, name: json.name })
+
+      // Redirect to dashboard
+      router.push("/u");
+    } catch (err) {
+      console.error("Network error:", err);
+      setError("Network error. Please try again.");
+    }
   };
 
   return (

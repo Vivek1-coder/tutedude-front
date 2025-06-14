@@ -5,7 +5,7 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card } from "../../components/ui/card";
 import { Send, Bot, User, Heart, Brain, Thermometer } from "lucide-react";
-
+import axios from "axios";
 const quickSymptoms = [
   {
     icon: Heart,
@@ -58,22 +58,25 @@ const Chat = () => {
     setIsLoading(true);
 
     // Simulate AI response
-    setTimeout(() => {
-      const aiMessage = {
-        id: (Date.now() + 1).toString(),
-        content: `I understand you're experiencing ${messageContent.toLowerCase()}. Based on the symptoms you've described, I'd like to gather more information. Can you tell me:
+    //     setTimeout(() => {
 
-1. When did these symptoms start?
-2. How would you rate the severity on a scale of 1-10?
-3. Have you noticed any triggers or patterns?
+    //       setMessages((prev) => [...prev, aiMessage]);
+    //       setIsLoading(false);
+    //     }, 2000);
 
-Please remember that I'm an AI assistant and this is not a substitute for professional medical advice. If you're experiencing severe symptoms, please contact your healthcare provider or emergency services immediately.`,
-        sender: "ai",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, aiMessage]);
-      setIsLoading(false);
-    }, 2000);
+    const res = await axios.post("/api/chat", {
+      query: messageContent,
+    });
+    console.log(res);
+    const { answer, explaination } = res.data.response;
+    const aiMessage = {
+      id: (Date.now() + 1).toString(),
+      content: `answer: ${answer}\nexplaination: ${explaination}`,
+      sender: "ai",
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, aiMessage]);
+    console.log(res);
   };
 
   const handleQuickSymptom = (prompt) => {

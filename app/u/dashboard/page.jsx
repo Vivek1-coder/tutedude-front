@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -8,9 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import { Progress } from "../components/ui/progress";
+import { Button } from "@components/ui/button";
+import { Badge } from "@components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import {
   BarChart,
   Bar,
@@ -77,10 +78,11 @@ const trendData = [
 const Dashboard = () => {
   const [showUpload, setShowUpload] = useState(false);
 
-  const { data: reports } = useQuery({
-    queryKey: ["reports"],
-    queryFn: () => Promise.resolve(mockReports),
-  });
+  // const { data: reports } = useQuery({
+  //   queryKey: ["reports"],
+  //   queryFn: () => Promise.resolve(mockReports),
+  // });
+  const { data: reports } = {};
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -114,7 +116,7 @@ const Dashboard = () => {
           </div>
           <Button
             onClick={() => setShowUpload(true)}
-            className="bg-[#006d77] hover:bg-[#006d77]/90 mt-4 sm:mt-0"
+            className="bg-[#f0f9fa] hover:bg-[#006d77]/90 mt-4 sm:mt-0"
           >
             <Upload className="w-4 h-4 mr-2" />
             Upload Report

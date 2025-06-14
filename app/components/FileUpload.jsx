@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { X, Upload, FileText, CheckCircle } from "lucide-react";
-
+import axios from "axios";
 // interface FileUploadProps {
 //   onClose: () => void;
 // }
@@ -16,11 +16,32 @@ export const FileUpload = ({ onClose }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log("Files dropped:", acceptedFiles);
+  const onDrop = useCallback(async (file) => {
+    console.log("Files dropped:", file);
     setIsUploading(true);
 
     // Simulate upload progress
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // const res = axios.post("/api/file-analyze", {
+
+    // });
+    if (!file) return;
+
+    // 1. Create FormData and append your file (and any other fields)
+    const formData = new FormData();
+    formData.append("pdf", file[0], file[0].name);
+    console.log("created formData");
+    // If you need extra data:
+    // formData.append('userId', user.id);
+
+    try {
+      // 2. Post the FormData
+      console.log("sending req.");
+      const response = await axios.post("/api/file-analyze", formData);
+      console.log("Upload success:", response.data);
+    } catch (err) {
+      console.error("Upload error:", err.response?.data || err.message);
+    }
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
         if (prev >= 100) {

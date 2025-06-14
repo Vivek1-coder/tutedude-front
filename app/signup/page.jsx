@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
-
+import { signup } from "../_lib/login-service";
 // interface SignupForm {
 //   name: string;
 //   email: string;
@@ -34,8 +34,29 @@ const Signup = () => {
 
   const password = watch("password");
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Signup data:", data);
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if (res.ok) {
+        // 1️⃣ Feedback
+        alert(json.message);
+        reset();
+        // 2️⃣ Redirect
+        router.push("/login");
+      } else {
+        alert(json.error);
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Network error");
+    }
     // Handle signup logic here
   };
 

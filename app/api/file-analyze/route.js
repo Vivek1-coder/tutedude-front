@@ -1,0 +1,20 @@
+import { NextResponse } from "next/server";
+import axios from "axios";
+const apiUrl = "http://localhost:4000";
+
+export async function POST(request) {
+  console.log("hello");
+  const token = request.cookies.get("token")?.value;
+  const form = await request.formData();
+  const file = form.get("pdf");
+  const forwardFd = new FormData();
+  forwardFd.append("pdf", file, file.name);
+
+  // console.log(request.data);
+  const res = await axios.post(`${apiUrl}/pdfs/analyze-lab-report`, forwardFd, {
+    headers: { cookie: token },
+  });
+  return res;
+  console.log();
+  return NextResponse.json({ message: "hello" }, { status: 200 });
+}
