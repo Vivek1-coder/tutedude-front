@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,16 +20,18 @@ export const metadata = {
 import React from "react";
 // import { Outlet } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
+
 // import { Toaster } from "./components/ui/toaster";
 
 const Layout = ({ children }) => {
   return (
     <html>
       <body>
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background flex flex-col">
           <Navbar />
-          <main>{children}</main>
+          <main className="flex-grow">{children}</main>
           {/* <Toaster /> */}
+          <Footer />
         </div>
       </body>
     </html>
