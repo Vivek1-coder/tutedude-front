@@ -6,6 +6,7 @@ import { Input } from "../../components/ui/input";
 import { Card } from "../../components/ui/card";
 import { Send, Bot, User, Heart, Brain, Thermometer } from "lucide-react";
 import axios from "axios";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const quickSymptoms = [
   {
     icon: Heart,
@@ -21,6 +22,57 @@ const quickSymptoms = [
 ];
 
 const Chat = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+
+  async function GenerateNewSession() {
+    const res = await axios.post("/api/chat/new-session");
+    console.log(res);
+    params.set("chatId", res.data.chatId);
+    router.replace(`${pathname}?${params.toString()}`);
+    setMessages([]);
+    // return res.data;
+  }
+  const [oldChats, setOldChats] = useState([]);
+  async function loadOldChat(id) {
+    console.log("gay", id);
+    const res = await axios.post(`/api/chat/load-chat`, { id }, {});
+    console.log(res.data);
+    setMessages(res.data.messages);
+    params.set("chatId", res.data._id);
+    router.replace(`${pathname}?${params.toString()}`);
+
+    console.log(res);
+  }
+  useEffect(() => {
+    // define your async function inside
+    const loadPrevChats = async () => {
+      try {
+        const res = await axios.post("/api/chat/load-prev-chats", {});
+        setOldChats(res.data);
+        if (res.data.length > 0) {
+          console.log(res.data);
+          const temp_initial_id = res.data[res.data.length - 1]._id;
+          // console.log(temp_initial_id);
+          // params.set("chatId", temp_initial_id);
+          // router.replace(`${pathname}?${params.toString()}`);
+
+          loadOldChat(temp_initial_id);
+        } else {
+          GenerateNewSession();
+        }
+
+        console.log(res);
+      } catch (err) {
+        console.error("Failed to load previous chats:", err);
+      }
+    };
+
+    loadPrevChats();
+  }, []);
+
   const [messages, setMessages] = useState([
     {
       id: "1",
@@ -64,8 +116,14 @@ const Chat = () => {
     //       setIsLoading(false);
     //     }, 2000);
 
-    const res = await axios.post("/api/chat", {
+    const chatId = searchParams.get("chatId");
+    if (!chatId) {
+      return;
+    }
+    console.log(chatId);
+    const res = await axios.post("/api/chat/query", {
       query: messageContent,
+      chatId,
     });
     console.log(res);
     const { answer, explaination } = res.data.response;
@@ -90,7 +148,20 @@ const Chat = () => {
         <h2 className="text-lg font-semibold text-[#293241] dark:text-white mb-4">
           Quick Symptoms
         </h2>
+        <div>
+          <Button onClick={() => GenerateNewSession()}>New Conv.</Button>
+        </div>
         <div className="space-y-2">
+          {oldChats?.map((oldChat) => (
+            <Button
+              key={oldChat._id}
+              variant="outline"
+              className="w-full justify-start"
+              onClick={() => loadOldChat(oldChat._id)}
+            >
+              {oldChat?.title}
+            </Button>
+          ))}
           {quickSymptoms.map((symptom) => (
             <Button
               key={symptom.label}
@@ -126,12 +197,12 @@ const Chat = () => {
               >
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    message.sender === "user"
+                    message.role === "user"
                       ? "bg-[#006d77] text-white ml-2"
                       : "bg-[#f28482] text-white mr-2"
                   }`}
                 >
-                  {message.sender === "user" ? (
+                  {message.role === "user" ? (
                     <User className="w-4 h-4" />
                   ) : (
                     <Bot className="w-4 h-4" />
@@ -154,7 +225,7 @@ const Chat = () => {
                         : "text-gray-500 dark:text-gray-400"
                     }`}
                   >
-                    {message.timestamp.toLocaleTimeString()}
+                    {/* {message?.timestamp?.toLocaleTimeString()} */}
                   </p>
                 </Card>
               </div>
