@@ -1,5 +1,6 @@
-const apiUrl = "http://localhost:4000";
+// const apiUrl = "http://localhost:4000";
 import { NextResponse } from "next/server";
+const apiUrl = "https://med-xplain-backend.onrender.com";
 
 import axios from "axios";
 export async function POST(request) {
