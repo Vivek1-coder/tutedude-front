@@ -18,7 +18,7 @@ export async function DELETE(request) {
     }   
     console.log("token",token);
 
-await axios.delete(`http://localhost:4000/chats/${chatId}`, {
+await axios.delete(`https://med-xplain-backend.onrender.com/chats/${chatId}`, {
   headers: { cookie: token }
 });
 return NextResponse.json({ success: true }, { status: 200 });
