@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../../components/ui/button";
+import { Suspense } from "react";
 import { Input } from "../../components/ui/input";
 import { Card } from "../../components/ui/card";
 import { EmptyChatPlaceholder } from "../../components/EmptyChatPlaceholder";
@@ -303,7 +304,17 @@ const Chat = () => {
         </div>
       </div>
     </div>
+    
   );
+
 };
 
-export default Chat;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading chat...</div>}>
+      <Chat />
+    </Suspense>
+  );
+}
+
+
