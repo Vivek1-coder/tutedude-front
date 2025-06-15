@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 const options = [
   {
     label: "Chat",
@@ -19,7 +19,13 @@ const Landing = () => {
   const router = useRouter();
 
   return (
-    <div className="relative h-screen flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat dark:bg-black" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581090700227-1e8e01d7906d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')" }}>
+    <div
+      className="relative h-screen flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat dark:bg-black"
+      style={{
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1581090700227-1e8e01d7906d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')",
+      }}
+    >
       {/* Overlay */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center dark:hidden"
@@ -41,21 +47,24 @@ const Landing = () => {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {options.map((option) => (
-           <button
-  key={option.label}
-  onClick={() => router.push(option.path)}
-  className="w-full p-6 sm:p-8 rounded-xl shadow-md backdrop-blur-md transition-all hover:scale-105 hover:shadow-xl
+            <Link
+              href={option.path}
+              key={option.label}
+              className="w-full p-6 sm:p-8 rounded-xl shadow-md backdrop-blur-md transition-all hover:scale-105 hover:shadow-xl
              flex flex-col items-center gap-2
              bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 
              dark:from-indigo-500 dark:via-purple-600 dark:to-pink-600
              text-gray-900 dark:text-white
              border border-transparent hover:border-white/40
              animate-gradient-x cursor-pointer"
->
-  <span className="text-2xl font-bold tracking-wide">{option.label}</span>
-  <span className="text-base opacity-90 text-center">{option.description}</span>
-</button>
-
+            >
+              <span className="text-2xl font-bold tracking-wide">
+                {option.label}
+              </span>
+              <span className="text-base opacity-90 text-center">
+                {option.description}
+              </span>
+            </Link>
           ))}
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
-const apiUrl = "https://med-xplain-backend.onrender.com";
-// const apiUrl = "http://localhost:4000";
+// const apiUrl = "https://med-xplain-backend.onrender.com";
+const apiUrl = "http://localhost:4000";
 
 export async function POST(request) {
   console.log("hello");
@@ -15,7 +15,6 @@ export async function POST(request) {
   const res = await axios.post(`${apiUrl}/pdfs/analyze-lab-report`, forwardFd, {
     headers: { cookie: token },
   });
-
   // return res;
   // console.log();
   console.log(JSON.stringify(res.data));

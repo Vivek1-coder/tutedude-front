@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -10,19 +10,30 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
+import { ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
 
 // type Metric = {
-//   value: number | null,
-//   normalRange: string | null,
+//   value: number | null;
+//   normalRange: string | null;
 // };
 
 // type LabReportProps = {
-//   metrics: Record<string, Metric>,
-//   remarks?: string,
+//   metrics: Record<string, Metric>;
+//   remarks?: string;
+//   summary?: string;
+//   explanation?: string;
+//   actionable_insights?: string[];
 // };
 
-export function LabReport({ metrics, remarks }) {
-  // Parse normalRange strings into numeric [min, max]
+export function LabReport({
+  metrics,
+  remarks,
+  summary,
+  explanation,
+  actionable_insights,
+}) {
+  const [showExplanation, setShowExplanation] = useState(false);
+
   const parsedData = Object.entries(metrics).map(
     ([name, { value, normalRange }]) => {
       let min = NaN,
@@ -43,25 +54,24 @@ export function LabReport({ metrics, remarks }) {
     }
   );
 
-  // Utility to check out-of-range
   const isOutOfRange = (d) =>
     d.value !== null &&
-    (!isFinite(d.min) || !isFinite(d.max)
-      ? false
-      : d.value < d.min || d.value > d.max);
+    isFinite(d.min) &&
+    isFinite(d.max) &&
+    (d.value < d.min || d.value > d.max);
 
   return (
-    <div className="space-y-8">
-      {/* 1. Remarks Callout */}
+    <div className="space-y-10">
+      {/* Remarks Section */}
       {remarks && (
         <div className="p-4 border-l-4 border-yellow-500 bg-yellow-50 text-yellow-900">
           <strong>Remarks:</strong> {remarks}
         </div>
       )}
 
-      {/* 2. Metrics Table */}
+      {/* Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border-collapse">
+        <table className="min-w-full border-collapse table-auto">
           <thead>
             <tr className="bg-gray-100">
               <th className="px-4 py-2 text-left">Metric</th>
@@ -81,9 +91,7 @@ export function LabReport({ metrics, remarks }) {
                 }
               >
                 <td className="px-4 py-2">{d.name}</td>
-                <td className="px-4 py-2 text-right">
-                  {d.value !== null ? d.value : "—"}
-                </td>
+                <td className="px-4 py-2 text-right">{d.value ?? "—"}</td>
                 <td className="px-4 py-2 text-center">
                   {isFinite(d.min) && isFinite(d.max)
                     ? `${d.min} – ${d.max}`
@@ -104,7 +112,7 @@ export function LabReport({ metrics, remarks }) {
         </table>
       </div>
 
-      {/* 3. Charts */}
+      {/* Chart Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {parsedData.map((d) => (
           <div key={d.name} className="h-48 p-4 border rounded-lg">
@@ -123,34 +131,28 @@ export function LabReport({ metrics, remarks }) {
                   tick={false}
                 />
                 <Tooltip formatter={(v) => v} />
-                {/* shading normal range */}
                 {isFinite(d.min) && isFinite(d.max) && (
-                  <ReferenceLine
-                    x={d.min}
-                    stroke="gray"
-                    strokeDasharray="3 3"
-                  />
+                  <>
+                    <ReferenceLine
+                      x={d.min}
+                      stroke="gray"
+                      strokeDasharray="3 3"
+                    />
+                    <ReferenceLine
+                      x={d.max}
+                      stroke="gray"
+                      strokeDasharray="3 3"
+                    />
+                  </>
                 )}
-                {isFinite(d.min) && isFinite(d.max) && (
-                  <ReferenceLine
-                    x={d.max}
-                    stroke="gray"
-                    strokeDasharray="3 3"
-                  />
-                )}
-                <Bar
-                  dataKey="value"
-                  barSize={20}
-                  isAnimationActive={false}
-                  fill={isOutOfRange(d) ? undefined : undefined}
-                />
+                <Bar dataKey="value" barSize={20} isAnimationActive={false} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         ))}
       </div>
 
-      {/* 4. Download as CSV */}
+      {/* CSV Download */}
       <button
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         onClick={() => {
@@ -174,6 +176,46 @@ export function LabReport({ metrics, remarks }) {
       >
         Download CSV
       </button>
+
+      {/* Summary */}
+      {summary && (
+        <div className="p-4 rounded border bg-blue-50 text-blue-900 shadow-sm">
+          <strong>Summary:</strong> {summary}
+        </div>
+      )}
+
+      {/* Actionable Insights */}
+      {actionable_insights?.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            <Lightbulb className="w-5 h-5 text-yellow-500" />
+            Actionable Insights
+          </h2>
+          <ul className="space-y-2 list-disc list-inside">
+            {actionable_insights.map((item, idx) => (
+              <li key={idx} className="text-gray-700">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Explanation Accordion */}
+      {explanation && (
+        <div className="rounded border bg-white shadow">
+          <button
+            onClick={() => setShowExplanation(!showExplanation)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left font-medium text-gray-800 hover:bg-gray-100"
+          >
+            <span>Detailed Explanation</span>
+            {showExplanation ? <ChevronUp /> : <ChevronDown />}
+          </button>
+          {showExplanation && (
+            <div className="px-4 pb-4 text-gray-700">{explanation}</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

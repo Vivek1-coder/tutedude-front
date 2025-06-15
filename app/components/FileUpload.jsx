@@ -43,12 +43,12 @@ export const FileUpload = ({ onClose }) => {
       // 2. Post the FormData
       console.log("sending req.");
       const response = await axios.post("/api/file-analyze", formData);
-      const res = response.data;
+      const res = response.data.response;
       console.log(res);
-      const { id, metric, remarks } = res;
+      const { _id: id, metric, remarks } = res;
+      console.log("hello boii", res);
       if (id) {
-        params.set("id", id);
-        router.replace(`${pathname}?${params.toString()}`);
+        router.replace(`${pathname}/${id}`);
       }
 
       console.log("helloooo ", res);

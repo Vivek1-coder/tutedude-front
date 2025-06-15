@@ -112,6 +112,7 @@ const Chat = () => {
       id: Date.now().toString(),
       content: messageContent,
       sender: "user",
+      role: "user",
       timestamp: new Date(),
     };
 
@@ -213,7 +214,7 @@ const Chat = () => {
               >
                 <div
                   className={`flex max-w-xs lg:max-w-md xl:max-w-lg ${
-                    message.sender === "user" ? "flex-row-reverse" : "flex-row"
+                    message.role === "user" ? "flex-row-reverse" : "flex-row"
                   }`}
                 >
                   <div
@@ -223,7 +224,7 @@ const Chat = () => {
                         : "bg-[#f28482] text-white mr-2"
                     }`}
                   >
-                    {message.role === "user" ? (
+                    {message.role === "user" || message.sender == "user" ? (
                       <User className="w-4 h-4" />
                     ) : (
                       <Bot className="w-4 h-4" />

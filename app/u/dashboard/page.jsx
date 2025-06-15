@@ -12,6 +12,7 @@ import {
 import { Button } from "@components/ui/button";
 import { Badge } from "@components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import axios from "axios";
 import {
   BarChart,
   Bar,
@@ -82,12 +83,20 @@ const Dashboard = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
-
+  const [reports, setReports] = useState([]);
+  useEffect(() => {
+    console.log("ioioio");
+    async function f() {
+      const res = await axios.post("/api/load-report/all");
+      console.log(res);
+      setReports(res.data.summaries_id_Array);
+    }
+    f();
+  }, []);
   // const { data: reports } = useQuery({
   //   queryKey: ["reports"],
   //   queryFn: () => Promise.resolve(mockReports),
   // });
-  const { data: reports } = {};
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -271,46 +280,55 @@ const Dashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {reports?.map((report) => (
-                  <div
-                    key={report.id}
-                    className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-[#006d77]/10 rounded-lg flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-[#006d77]" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-[#293241] dark:text-white">
-                          {report.name}
-                        </h3>
-                        <p className="text-sm text-[#293241]/80 dark:text-gray-400">
-                          {report.date} • {report.type}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      {report.confidence && (
-                        <div className="text-right">
-                          <p className="text-sm font-medium text-[#293241] dark:text-white">
-                            {report.confidence}% confidence
-                          </p>
-                          <Progress
-                            value={report.confidence}
-                            className="w-20"
-                          />
-                        </div>
-                      )}
-                      <Badge className={getStatusColor(report.status)}>
-                        {report.status}
-                      </Badge>
-                      <Button variant="outline" size="sm">
-                        View
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+              <div className="space-y-4 grid grid-cols-1 gap-2">
+                {reports?.map((report) => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        router.replace(`${pathname}/${report.ID}`);
+                      }}
+                    >
+                      Lab Report Analysis
+                    </Button>
+                  );
+                  // <div
+                  //   key={report.id}
+                  //   className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                  // >
+                  //   <div className="flex items-center space-x-4">
+                  //     <div className="w-10 h-10 bg-[#006d77]/10 rounded-lg flex items-center justify-center">
+                  //       <FileText className="w-5 h-5 text-[#006d77]" />
+                  //     </div>
+                  //     <div>
+                  //       <h3 className="font-medium text-[#293241] dark:text-white">
+                  //         {report.name}
+                  //       </h3>
+                  //       <p className="text-sm text-[#293241]/80 dark:text-gray-400">
+                  //         {report.date} • {report.type}
+                  //       </p>
+                  //     </div>
+                  //   </div>
+                  //   <div className="flex items-center space-x-4">
+                  //     {report.confidence && (
+                  //       <div className="text-right">
+                  //         <p className="text-sm font-medium text-[#293241] dark:text-white">
+                  //           {report.confidence}% confidence
+                  //         </p>
+                  //         <Progress
+                  //           value={report.confidence}
+                  //           className="w-20"
+                  //         />
+                  //       </div>
+                  //     )}
+                  //     <Badge className={getStatusColor(report.status)}>
+                  //       {report.status}
+                  //     </Badge>
+                  //     <Button variant="outline" size="sm">
+                  //       View
+                  //     </Button>
+                  //   </div>
+                  // </div>;
+                })}
               </div>
             </CardContent>
           </Card>

@@ -1,22 +1,21 @@
-const apiUrl = "http://localhost:4000";
-import axios from "axios";
 import { NextResponse } from "next/server";
+import axios from "axios";
 // const apiUrl = "https://med-xplain-backend.onrender.com";
+const apiUrl = "http://localhost:4000";
 
 export async function POST(request) {
   const token = request.cookies.get("token")?.value;
-  // console.log(request);
+
   const { id } = await request.json();
-  console.log(id);
+  console.log(`${apiUrl}/user-query/single`);
   const res = await axios.post(
-    `${apiUrl}/chats/loadChat`,
-    { id },
+    `${apiUrl}/user-query/single`,
+    {
+      summaryId: id,
+    },
     {
       headers: { cookie: token },
     }
   );
-  return NextResponse.json(res.data, {
-    status: res.status,
-  });
-  console.log(res);
+  return NextResponse.json(res.data, { status: res.status });
 }
