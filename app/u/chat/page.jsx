@@ -7,7 +7,13 @@ import { Suspense } from "react";
 import { Input } from "../../components/ui/input";
 import { Card } from "../../components/ui/card";
 import { EmptyChatPlaceholder } from "../../components/EmptyChatPlaceholder";
-import { ChatGear, UploadCloud, Activity } from "lucide-react";
+import {
+  ChatGear,
+  UploadCloud,
+  Activity,
+  DeleteIcon,
+  Trash,
+} from "lucide-react";
 import {
   Send,
   Bot,
@@ -70,6 +76,28 @@ const Chat = () => {
 
     console.log(res);
   }
+
+const deleteChat = async (chatId) => {
+  try {
+    const response = await axios.delete("/api/chat/delete-chat", {
+      data: { chatId }, // axios uses `data` for DELETE body
+    });
+
+    setOldChats((prevChats) =>
+      prevChats.filter((chat) => chat._id !== chatId)
+    );
+  } catch (error) {
+    console.error(
+      "Failed to delete chat:",
+      error.response?.data || error.message
+    );
+  }
+};
+
+
+
+
+
   useEffect(() => {
     // define your async function inside
     const loadPrevChats = async () => {
@@ -169,40 +197,54 @@ const Chat = () => {
     <div className="min-h-screen pt-16 flex bg-[#f0f3f4] dark:bg-gray-900 h-screen">
       {/* <EmptyChatPlaceholder></EmptyChatPlaceholder> */}
       {/* Sidebar */}
-      <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-scroll">
+      <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
         <div>
-          <Button onClick={() => GenerateNewSession()} className="w-full">
-            New Conversation
+          <Button
+            onClick={() => GenerateNewSession()}
+            className="w-full cursor-pointer "
+          >
+            + New Conversation
           </Button>
         </div>
 
-        <h2 className="text-lg font-semibold text-[#293241] dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-[#293241] dark:text-white mb-4 mt-4">
           Previous Chats
         </h2>
 
         <div className="space-y-2">
           {oldChats?.map((oldChat) => (
-            <Button
+            <Card
               key={oldChat._id}
-              variant="outline"
-              className="w-full justify-start"
-              onClick={() => loadOldChat(oldChat._id)}
+              className="flex items-center justify-between w-full p-2 mb-2 border rounded-md shadow-sm hover:bg-gray-100"
             >
-              {oldChat?.title}
-            </Button>
+              <div
+                className="flex-1 cursor-pointer text-left truncate"
+                onClick={() => loadOldChat(oldChat._id)}
+              >
+                {oldChat?.title || "Untitled Chat"}
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => deleteChat(oldChat._id)}
+                className="text-red-500 hover:text-red-700 hover:bg-gray-200 cursor-pointer"
+              >
+                <Trash className="w-4 h-4" />
+              </Button>
+            </Card>
           ))}
         </div>
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col overflow-y-scroll">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages?.length === 0 && <EmptyChatPlaceholder />}
           {messages?.length > 0 &&
             messages.map((message) => (
               <motion.div
-                key={message.id}
+                key={message._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -220,14 +262,14 @@ const Chat = () => {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${
                       message.role === "user"
-                        ? "bg-[#006d77] text-white ml-2"
-                        : "bg-[#f28482] text-white mr-2"
+                        ? "bg-[#006d77] text-white ml-2 mr-2"
+                        : "bg-[#f28482] text-white p-2 mr-2"
                     }`}
                   >
                     {message.role === "user" ? (
                       <User className="w-4 h-4" />
                     ) : (
-                      <Bot className="w-4 h-4" />
+                      <Bot className="w-8 h-8" />
                     )}
                   </div>
                   <Card
@@ -260,7 +302,7 @@ const Chat = () => {
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
             >
-              <div className="flex">
+              <div className="flex gap-2">
                 <div className="w-8 h-8 rounded-full bg-[#f28482] text-white mr-2 flex items-center justify-center">
                   <Bot className="w-4 h-4" />
                 </div>
@@ -304,9 +346,7 @@ const Chat = () => {
         </div>
       </div>
     </div>
-    
   );
-
 };
 
 export default function Page() {
@@ -316,5 +356,3 @@ export default function Page() {
     </Suspense>
   );
 }
-
-
