@@ -1,37 +1,165 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tutedude Frontend
+
+A modern, full-stack web application built with **Next.js** for healthcare chat and lab report management, featuring authentication, chat with AI, and lab report analysis.
+
+---
+
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Pages & Features](#pages--features)
+- [API Routes](#api-routes)
+- [Components](#components)
+- [Dependencies](#dependencies)
+- [Development Scripts](#development-scripts)
+- [Deployment](#deployment)
+
+---
+
+## Project Overview
+
+This project is a healthcare assistant platform where users can:
+
+- Chat with an AI assistant about symptoms.
+- Upload and analyze lab reports.
+- Manage their health data securely.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+2. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- `app/` — Main Next.js app directory.
+  - `pages/` — Standalone React pages (legacy or for routing).
+  - `u/` — User dashboard, chat, and dynamic lab report pages.
+  - `components/` — Reusable UI and feature components.
+  - `api/` — API route handlers (Next.js API routes).
+  - `login/`, `signup/` — Auth pages (Next.js routing).
+  - `_lib/` — Utility and service functions.
+- `public/` — Static assets.
+- `lib/` — General utilities.
+- `tutedude-front/` — (empty or legacy, not used in main app).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Pages & Features
 
-To learn more about Next.js, take a look at the following resources:
+### Main Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **`/` (LandingPage):** Home page with 3D hero and feature highlights.
+- **`/login` & `/signup`:** User authentication forms with validation and feedback.
+- **`/u` (User Landing):** Entry point for authenticated users, links to chat and dashboard.
+- **`/u/chat`:** Main chat interface with AI assistant, quick symptom prompts, and chat history.
+- **`/u/dashboard`:** User dashboard for managing and viewing lab reports.
+- **`/u/dashboard/[id]`:** Dynamic page to view a specific lab report with metrics, remarks, and insights.
+- **`/pages/Chat.jsx`:** (Legacy) Standalone chat page.
+- **`/pages/Dashboard.jsx`:** (Legacy) Standalone dashboard.
+- **`/pages/NotFound.jsx`:** Custom 404 page.
+- **`/pages/Index.jsx`:** Placeholder index page.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Auth Pages
 
-## Deploy on Vercel
+- **`/login/page.jsx` & `/signup/page.jsx`:** Next.js app router versions of login/signup, using React Hook Form, validation, and API integration.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# tutedude-front" 
+## API Routes
+
+All API routes are in `app/api/` and proxy requests to the backend (`https://med-xplain-backend.onrender.com`):
+
+- **Auth**
+
+  - `POST /api/signin` — User login.
+  - `POST /api/signup` — User registration.
+  - `POST /api/logout` — Logout, clears token cookie.
+  - `GET /api/auth/status` — Returns login status.
+
+- **Chat**
+
+  - `POST /api/chat/query` — Send a message/query to the AI assistant.
+  - `POST /api/chat/load-chat` — Load a specific chat session.
+  - `POST /api/chat/load-prev-chats` — Load all previous chat sessions.
+  - `POST /api/chat/new-session` — Start a new chat session.
+  - `DELETE /api/chat/delete-chat` — Delete a chat session.
+
+- **Lab Reports**
+  - `POST /api/file-analyze` — Upload and analyze a lab report PDF.
+  - `POST /api/load-report/all` — Get all user lab reports.
+  - `POST /api/load-report/specific` — Get a specific lab report by ID.
+
+---
+
+## Components
+
+- **UI Components:** Located in `app/components/ui/` (buttons, cards, dialogs, forms, etc.), built with [Radix UI](https://www.radix-ui.com/) and custom styles.
+- **Feature Components:** `Hero3D`, `FeatureSection`, `FileUpload`, `LabReport`, etc.
+- **Layout Components:** `Navbar`, `Footer`, `ThemeToggle`, etc.
+
+---
+
+## Dependencies
+
+- **Framework & Core:**
+  - `next`, `react`, `react-dom`
+- **UI & Styling:**
+  - `@radix-ui/*` — Accessible UI primitives.
+  - `tailwindcss`, `postcss`, `clsx`, `class-variance-authority`
+  - `framer-motion` — Animations.
+  - `lucide-react`, `react-icons` — Icon libraries.
+- **Forms & Validation:**
+  - `react-hook-form`, `zod`
+- **State & Data:**
+  - `@tanstack/react-query` — Data fetching and caching.
+  - `axios` — HTTP requests.
+- **Charts & Visualization:**
+  - `recharts`
+- **3D & Visualization:**
+  - `three`, `@react-three/fiber`, `@react-three/drei`
+- **File Upload:**
+  - `react-dropzone`
+- **Notifications:**
+  - `react-toastify`, `sonner`
+- **Other:**
+  - `date-fns`, `cmdk`, `embla-carousel-react`, `vaul`, `input-otp`, `react-resizable-panels`, `react-router-dom`
+- **Dev Dependencies:**
+  - `eslint`, `eslint-config-next`, `@types/*`, `tailwindcss`, `tw-animate-css`
+
+---
+
+## Development Scripts
+
+- `npm run dev` — Start development server.
+- `npm run build` — Build for production.
+- `npm start` — Start production server.
+- `npm run lint` — Lint codebase.
+
+---
+
+## Deployment
+
+Deploy easily on [Vercel](https://vercel.com/) or any platform supporting Next.js.
+
+---
+
+## Notes
+
+- All API routes require authentication via a token cookie.
+- The frontend proxies requests to a remote backend for chat and lab report analysis.
+- For more details, see the code in each page/component or the API route handlers.
+
+---
