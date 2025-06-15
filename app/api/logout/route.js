@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+const apiUrl = "https://med-xplain-backend.onrender.com";
 
 export async function POST() {
   const res = NextResponse.json({ message: "Logged out" }, { status: 200 });
