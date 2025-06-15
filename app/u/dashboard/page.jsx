@@ -323,4 +323,13 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+import { Suspense } from "react";
+
+function Page() {
+  return (
+    <Suspense fallback={<div>Loading Dashboard...</div>}>
+      <Dashboard />
+    </Suspense>
+  );
+}
+export default Page;
