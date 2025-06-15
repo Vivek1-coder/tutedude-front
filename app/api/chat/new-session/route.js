@@ -8,10 +8,10 @@ export async function POST(request) {
   // console.log(token);
   // const { chatId } = await request.json();
   const res = await axios.post(
-    `${apiUrl}/chats/new-session`,
-    {},
-    { headers: { cookie: token } }
-  );
+  `${apiUrl}/chats/new-session`,
+  {},
+  { headers: { cookie: token } }
+);
   console.log(res);
   return NextResponse.json(res.data, {
     status: res.status,
