@@ -13,14 +13,15 @@ export const Navbar = () => {
   const pathname = usePathname(); // replaces useLocation()
   const navItems = [
     { href: "/", label: "Home" },
-    { href: "/chat", label: "Chat" },
-    { href: "/dashboard", label: "Dashboard" },
+    { href: "/u/chat", label: "Chat" },
+    { href: "/u/dashboard", label: "Dashboard" },
   ];
   const router = useRouter();
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
     router.push("/login");
   };
+  
   return (
     <nav className="w-full  bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

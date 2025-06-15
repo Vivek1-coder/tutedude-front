@@ -79,15 +79,10 @@ const Chat = () => {
     loadPrevChats();
   }, []);
 
-  const [messages, setMessages] = useState([
-    {
-      id: "1",
-      content:
-        "Hello! I'm your EthicalMD assistant. How can I help you today? Please describe your symptoms or health concerns.",
-      sender: "ai",
-      timestamp: new Date(),
-    },
-  ]);
+ 
+
+  const [messages, setMessages] = useState([]);
+
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -163,12 +158,15 @@ const Chat = () => {
     <div className="min-h-screen pt-16 flex bg-[#f0f3f4] dark:bg-gray-900">
       {/* Sidebar */}
       <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4">
-        <h2 className="text-lg font-semibold text-[#293241] dark:text-white mb-4">
-          Quick Symptoms
-        </h2>
-        <div>
+
+        <div className="bg-blue-400">
           <Button onClick={() => GenerateNewSession()}>New Conv.</Button>
         </div>
+
+        <h2 className="text-lg font-semibold text-[#293241] dark:text-white mb-4">
+          Quick Start
+        </h2>
+        
         <div className="space-y-2">
           {oldChats?.map((oldChat) => (
             <Button
