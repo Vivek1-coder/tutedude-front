@@ -38,7 +38,7 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-2">Follow Us</h3>
           <div className="flex items-center space-x-4 mt-2">
             <a
-              href="https://github.com/your-profile"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-gray-400 text-xl"
