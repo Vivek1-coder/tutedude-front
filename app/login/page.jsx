@@ -58,7 +58,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+    <div className="min-h-screen pt-10 bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -137,7 +137,7 @@ const Login = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#006d77] hover:bg-[#006d77]/90"
+                className="w-full bg-[#006d77] hover:bg-[#006d77]/90 hover:scale-105 cursor-pointer"
               >
                 Sign In
               </Button>
@@ -156,7 +156,7 @@ const Login = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full hover:scale-105  cursor-pointer">
                   <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
                     <path
                       fill="#4285f4"
@@ -177,15 +177,12 @@ const Login = () => {
                   </svg>
                   Google
                 </Button>
-                <Button variant="outline" className="w-full">
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="#00a1f1"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M23.64 13.3c0-.66-.06-1.29-.16-1.9H12v3.6h6.5c-.28 1.5-1.13 2.77-2.41 3.62v3h3.9c2.28-2.1 3.65-5.2 3.65-8.32z" />
-                    <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.9-3c-1.07.72-2.44 1.15-4.03 1.15-3.1 0-5.73-2.09-6.67-4.91H1.4v3.01C3.37 20.98 7.36 24 12 24z" />
-                  </svg>
+                <Button variant="outline" className="w-full  hover:scale-105 cursor-pointer">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
+                    alt="Microsoft Logo"
+                    className=" h-4"
+                  />
                   Microsoft
                 </Button>
               </div>

@@ -8,6 +8,7 @@ export async function POST(request) {
     const body = await request.json();
     console.log("hello ji");
     const { name, email, password } = body;
+
     const response = await axios.post(`${apiUrl}/api/signup`, {
       name,
       email,
@@ -17,7 +18,7 @@ export async function POST(request) {
 
     // await signup(body); // throws on error or duplicate
     return NextResponse.json(
-      { message: "User registered successfully" },
+      { success:true,message: "User registered successfully" },
       { status: 201 }
     );
   } catch (err) {

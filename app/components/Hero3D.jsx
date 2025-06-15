@@ -4,10 +4,13 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sparkles } from "@react-three/drei";
 import { motion } from "framer-motion";
 import * as THREE from "three";
+import Link from "next/link";
 
 const AnimatedSphere = () => {
   const meshRef = useRef(null);
-  const isDark = typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -31,7 +34,6 @@ const AnimatedSphere = () => {
   );
 };
 
-
 const CameraFloat = () => {
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
@@ -41,7 +43,6 @@ const CameraFloat = () => {
   });
   return null;
 };
-
 
 const OrbitRing = () => {
   const ringRef = useRef(null);
@@ -64,7 +65,6 @@ const OrbitRing = () => {
   );
 };
 
-
 export const Hero3D = () => {
   return (
     <motion.div
@@ -86,26 +86,32 @@ export const Hero3D = () => {
       {/* 3D Canvas */}
       <div className="absolute inset-0 z-0">
         <Canvas
-  camera={{ position: [0, 0, 6], fov: 65 }}
-  shadows
-  gl={{ antialias: true }}
-  className="w-full h-[90vh]"
->
-  {/* Depth fog for 3D feel */}
-  <fog attach="fog" args={["#0e0e0e", 10, 20]} />
+          camera={{ position: [0, 0, 6], fov: 65 }}
+          shadows
+          gl={{ antialias: true }}
+          className="w-full h-[90vh]"
+        >
+          {/* Depth fog for 3D feel */}
+          <fog attach="fog" args={["#0e0e0e", 10, 20]} />
 
-  {/* Soft lighting */}
-  <ambientLight intensity={0.6} />
-  <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
+          {/* Soft lighting */}
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[5, 5, 5]} intensity={1.5} />
 
-  {/* 3D content */}
-  {/* <OrbitRing />  */}
-  <AnimatedSphere />
-  <Sparkles count={80} speed={0.4} scale={6} size={1.5} color="#ffffff" />
-  <CameraFloat />
+          {/* 3D content */}
+          {/* <OrbitRing />  */}
+          <AnimatedSphere />
+          <Sparkles
+            count={80}
+            speed={0.4}
+            scale={6}
+            size={1.5}
+            color="#ffffff"
+          />
+          {/* <CameraFloat /> */}
 
-  {/* Reflective ground for immersion */}
-  {/* <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.8, 0]} receiveShadow>
+          {/* Reflective ground for immersion */}
+          {/* <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.8, 0]} receiveShadow>
     <planeGeometry args={[100, 100]} />
     <meshStandardMaterial
       color="#111111"
@@ -117,11 +123,13 @@ export const Hero3D = () => {
     />
   </mesh> */}
 
-  {/* Controls */}
-  <OrbitControls enableZoom={false} enablePan={false} enableDamping dampingFactor={0.08} />
-</Canvas>
-
-
+          {/* Controls */}
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+           
+          />
+        </Canvas>
       </div>
 
       {/* Text and Buttons */}
@@ -141,17 +149,19 @@ export const Hero3D = () => {
           transition={{ delay: 1.1, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
+          <Link href="/signup">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-[#ffbe0b] hover:bg-[#ffd23f] text-[#3a0ca3] px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg"
+            className="bg-[#ffbe0b] hover:bg-[#ffd23f] cursor-pointer text-[#3a0ca3] px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg"
           >
             Get Started
           </motion.button>
+           </Link>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 border border-white/30 shadow-lg"
+            className="bg-white/20 hover:bg-white/30 cursor-pointer text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 border border-white/30 shadow-lg"
           >
             Learn More
           </motion.button>

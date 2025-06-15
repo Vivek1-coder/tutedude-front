@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { signup } from "../_lib/login-service";
+import { useRouter } from "next/navigation";
 // interface SignupForm {
 //   name: string;
 //   email: string;
@@ -32,6 +33,8 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
+  const router = useRouter();
+
   const password = watch("password");
 
   const onSubmit = async (data) => {
@@ -47,7 +50,7 @@ const Signup = () => {
       if (res.ok) {
         // 1️⃣ Feedback
         alert(json.message);
-        reset();
+        // reset();
         // 2️⃣ Redirect
         router.push("/login");
       } else {
@@ -61,7 +64,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 pt-10">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -146,7 +149,7 @@ const Signup = () => {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3"
+                    className="absolute right-0 top-0 h-full px-3 "
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -201,7 +204,7 @@ const Signup = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#006d77] hover:bg-[#006d77]/90"
+                className="w-full bg-[#006d77] hover:bg-[#006d77]/90  cursor-pointer hover:scale-105 "
               >
                 Create Account
               </Button>

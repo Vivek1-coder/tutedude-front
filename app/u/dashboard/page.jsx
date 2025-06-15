@@ -98,7 +98,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f0f3f4] dark:bg-gray-900 p-6">
+    <div className="min-h-screen pt-18 bg-[#f0f3f4] dark:bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <motion.div
@@ -116,7 +116,7 @@ const Dashboard = () => {
           </div>
           <Button
             onClick={() => setShowUpload(true)}
-            className="bg-[#f0f9fa] hover:bg-[#006d77]/90 mt-4 sm:mt-0"
+            className="bg-slate-400 dark:bg-[#f0f9fa] hover:bg-[#006d77]/90 mt-4 sm:mt-0"
           >
             <Upload className="w-4 h-4 mr-2" />
             Upload Report
