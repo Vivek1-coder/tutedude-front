@@ -58,19 +58,48 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen pt-10 bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
+  {/* Background Layer */}
+  <div
+        className="absolute inset-0 z-0 bg-cover bg-center dark:hidden"
+        style={{
+          backgroundImage:
+            "url('https://en.idei.club/uploads/posts/2023-06/1687785677_en-idei-club-p-aesthetic-medicine-background-dizain-krasi-73.jpg')",
+          filter: "blur(8px)",
+        }}
+      />
+   <div
+    className="absolute inset-0 z-0 bg-cover bg-center hidden dark:block"
+    style={{
+      backgroundImage:
+        "url('https://static.vecteezy.com/system/resources/previews/006/712/985/original/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg')",
+      filter: "blur(10px)",
+    }}
+  />
+
+  {/* Dark overlay to dim the background */}
+  <div className="absolute inset-0 z-0 bg-black/40" />
+
+  {/* Main Content (Login Card) */}
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8 }}
+    className="z-10 w-full max-w-md"
+  >
+    {/* <div className="min-h-screen pt-10 bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="w-full max-w-md"
-      >
+      > */}
         <Card className="shadow-2xl border-0">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-[#293241] dark:text-white">
               Welcome Back
             </CardTitle>
-            <CardDescription>Sign in to your EthicalMD account</CardDescription>
+            <CardDescription className="font-semibold text-gray-600 dark:text-gray-300">Sign in to your EthicalMD account</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -137,7 +166,7 @@ const Login = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#006d77] hover:bg-[#006d77]/90 hover:scale-105 cursor-pointer"
+                className="w-full bg-[#006d77] hover:bg-[#006d77]/90 hover:scale-105 cursor-pointer text-gray-200"
               >
                 Sign In
               </Button>
@@ -149,7 +178,7 @@ const Login = () => {
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white dark:bg-gray-800 text-gray-500">
+                  <span className="px-2 bg-white dark:bg-gray-800 dark:text-gray-300 font-semibold">
                     Or continue with
                   </span>
                 </div>
@@ -188,19 +217,21 @@ const Login = () => {
               </div>
             </div>
 
-            <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300 font-semibold">
               Don't have an account?{" "}
               <Link
                 href="/signup"
-                className="text-[#006d77] hover:underline font-medium"
+                className="text-[#006d77] dark:text-[#7ed7df] hover:underline font-medium"
               >
                 Sign up
               </Link>
             </p>
           </CardContent>
         </Card>
-      </motion.div>
-    </div>
+        </motion.div>
+    </div>  
+    // </motion.div>
+    // </div>
   );
 };
 

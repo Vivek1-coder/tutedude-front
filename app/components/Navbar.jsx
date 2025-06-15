@@ -73,7 +73,7 @@ export const Navbar = () => {
                   </Link>
                   <Link href="/signup">
                     <Button
-                      className="bg-[#006d77] hover:bg-[#006d77]/90"
+                      className="bg-[#006d77] hover:bg-[#006d77]/90 dark:text-gray-200 dark:bg-[#006d85]"
                       size="sm"
                     >
                       Sign Up
