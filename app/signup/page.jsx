@@ -64,19 +64,52 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 pt-10">
+    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
+      {/* Background Layer */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center dark:hidden"
+        style={{
+          backgroundImage:
+            "url('https://en.idei.club/uploads/posts/2023-06/1687785677_en-idei-club-p-aesthetic-medicine-background-dizain-krasi-73.jpg')",
+          filter: "blur(8px)",
+        }}
+      />
+
+      <div
+    className="absolute inset-0 z-0 bg-cover bg-center hidden dark:block"
+    style={{
+      backgroundImage:
+        "url('https://static.vecteezy.com/system/resources/previews/006/712/985/original/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg')",
+      filter: "blur(10px)",
+    }}
+  />
+    
+      {/* Dark overlay to dim the background */}
+      <div className="absolute inset-0 z-0 bg-black/40" />
+    
+      {/* Main Content (Login Card) */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="z-10 w-full max-w-md"
+      >
+
+      
+
+    {/* <div className="min-h-screen bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 pt-10">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="w-full max-w-md"
-      >
+      > */}
         <Card className="shadow-2xl border-0">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-[#293241] dark:text-white">
               Create Account
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="font-semibold text-[#293241] dark:text-gray-300">
               Join EthicalMD and start your healthcare journey
             </CardDescription>
           </CardHeader>
@@ -204,17 +237,17 @@ const Signup = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#006d77] hover:bg-[#006d77]/90  cursor-pointer hover:scale-105 "
+                className="w-full bg-[#006d77] hover:bg-[#006d77]/90  cursor-pointer hover:scale-105 dark:text-gray-200"
               >
                 Create Account
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400 font-semibold">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="text-[#006d77] hover:underline font-medium"
+                className="text-[#006d77] dark:text-[#7ed7df] hover:underline font-medium"
               >
                 Sign in
               </Link>
