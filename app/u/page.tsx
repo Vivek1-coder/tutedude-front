@@ -15,7 +15,7 @@ const options = [
   },
 ];
 
-const Landing = () => {
+const Page = () => {
   const router = useRouter();
 
   return (
@@ -63,4 +63,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default Page;
