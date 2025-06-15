@@ -5,14 +5,25 @@ import { motion } from "framer-motion";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Card } from "../../components/ui/card";
-import { Send, Bot, User, Heart, Brain, Thermometer, Weight } from "lucide-react";
+import { EmptyChatPlaceholder } from "../../components/EmptyChatPlaceholder";
+import { ChatGear, UploadCloud, Activity } from "lucide-react";
+import {
+  Send,
+  Bot,
+  User,
+  Heart,
+  Brain,
+  Thermometer,
+  Weight,
+} from "lucide-react";
 import axios from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const quickSymptoms = [
   {
     icon: Heart,
     label: "Heart Palpitations",
-    prompt: "I am experiencing heart palpitations and saw a video saying it’s normal. Should I be concerned?",
+    prompt:
+      "I am experiencing heart palpitations and saw a video saying it’s normal. Should I be concerned?",
   },
   { icon: Brain, label: "Headache", prompt: "I have a persistent headache" },
   {
@@ -23,8 +34,9 @@ const quickSymptoms = [
   {
     icon: Weight,
     label: "Weight Loss study",
-    prompt: "Investigate sudden weight loss without lifestyle changes. (Doctor – Differential Analysis)"
-  }
+    prompt:
+      "Investigate sudden weight loss without lifestyle changes. (Doctor – Differential Analysis)",
+  },
 ];
 
 const Chat = () => {
@@ -32,6 +44,11 @@ const Chat = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
+  const [messages, setMessages] = useState([]);
+
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
   async function GenerateNewSession() {
     const res = await axios.post("/api/chat/new-session");
@@ -60,11 +77,11 @@ const Chat = () => {
         setOldChats(res.data);
         if (res.data.length > 0) {
           console.log(res.data);
-          const temp_initial_id = res.data[res.data.length - 1]._id;
+          const temp_initial_id = res.data[0]._id;
           // console.log(temp_initial_id);
           // params.set("chatId", temp_initial_id);
           // router.replace(`${pathname}?${params.toString()}`);
-
+          console.log("intially load , loading chat_id", temp_initial_id);
           loadOldChat(temp_initial_id);
         } else {
           GenerateNewSession();
@@ -78,14 +95,6 @@ const Chat = () => {
 
     loadPrevChats();
   }, []);
-
- 
-
-  const [messages, setMessages] = useState([]);
-
-  const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -135,38 +144,41 @@ const Chat = () => {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, aiMessage]);
+    setIsLoading(false);
+
     console.log(res);
   };
 
   const handleQuickSymptom = (prompt) => {
     handleSend(prompt);
   };
-  useEffect(() => {
-  setMessages([
-    {
-      id: "1",
-      content:
-        "Hello! I'm your EthicalMD assistant. How can I help you today? Please describe your symptoms or health concerns.",
-      sender: "ai",
-      timestamp: new Date(), // Now safe: runs only on client
-    },
-  ]);
-}, []);
-
+  // useEffect(() => {
+  //   setMessages([
+  //     {
+  //       id: "1",
+  //       content:
+  //         "Hello! I'm your EthicalMD assistant. How can I help you today? Please describe your symptoms or health concerns.",
+  //       sender: "ai",
+  //       timestamp: new Date(), // Now safe: runs only on client
+  //     },
+  //   ]);
+  // }, []);
 
   return (
-    <div className="min-h-screen pt-16 flex bg-[#f0f3f4] dark:bg-gray-900">
+    <div className="min-h-screen pt-16 flex bg-[#f0f3f4] dark:bg-gray-900 h-screen">
+      {/* <EmptyChatPlaceholder></EmptyChatPlaceholder> */}
       {/* Sidebar */}
-      <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4">
-
-        <div className="bg-blue-400">
-          <Button onClick={() => GenerateNewSession()}>New Conv.</Button>
+      <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-scroll">
+        <div>
+          <Button onClick={() => GenerateNewSession()} className="w-full">
+            New Conversation
+          </Button>
         </div>
 
         <h2 className="text-lg font-semibold text-[#293241] dark:text-white mb-4">
-          Quick Start
+          Previous Chats
         </h2>
-        
+
         <div className="space-y-2">
           {oldChats?.map((oldChat) => (
             <Button
@@ -178,75 +190,68 @@ const Chat = () => {
               {oldChat?.title}
             </Button>
           ))}
-          {quickSymptoms.map((symptom) => (
-            <Button
-              key={symptom.label}
-              variant="outline"
-              className="w-full justify-start"
-              onClick={() => handleQuickSymptom(symptom.prompt)}
-            >
-              <symptom.icon className="w-4 h-4 mr-2" />
-              {symptom.label}
-            </Button>
-          ))}
         </div>
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-y-scroll">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.map((message) => (
-            <motion.div
-              key={message.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className={`flex ${
-                message.sender === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`flex max-w-xs lg:max-w-md xl:max-w-lg ${
-                  message.sender === "user" ? "flex-row-reverse" : "flex-row"
+          {messages?.length === 0 && <EmptyChatPlaceholder />}
+          {messages?.length > 0 &&
+            messages.map((message) => (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`flex ${
+                  message.sender === "user" || message.role === "user"
+                    ? "justify-end"
+                    : "justify-start"
                 }`}
               >
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    message.role === "user"
-                      ? "bg-[#006d77] text-white ml-2"
-                      : "bg-[#f28482] text-white mr-2"
+                  className={`flex max-w-xs lg:max-w-md xl:max-w-lg ${
+                    message.sender === "user" ? "flex-row-reverse" : "flex-row"
                   }`}
                 >
-                  {message.role === "user" ? (
-                    <User className="w-4 h-4" />
-                  ) : (
-                    <Bot className="w-4 h-4" />
-                  )}
-                </div>
-                <Card
-                  className={`p-3 ${
-                    message.sender === "user"
-                      ? "bg-[#006d77] text-white"
-                      : "bg-white dark:bg-gray-800"
-                  }`}
-                >
-                  <p className="text-sm whitespace-pre-wrap">
-                    {message.content}
-                  </p>
-                  <p
-                    className={`text-xs mt-1 ${
-                      message.sender === "user"
-                        ? "text-white/70"
-                        : "text-gray-500 dark:text-gray-400"
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      message.role === "user"
+                        ? "bg-[#006d77] text-white ml-2"
+                        : "bg-[#f28482] text-white mr-2"
                     }`}
                   >
-                    {/* {message?.timestamp?.toLocaleTimeString()} */}
-                  </p>
-                </Card>
-              </div>
-            </motion.div>
-          ))}
+                    {message.role === "user" ? (
+                      <User className="w-4 h-4" />
+                    ) : (
+                      <Bot className="w-4 h-4" />
+                    )}
+                  </div>
+                  <Card
+                    className={`p-3 ${
+                      message.sender === "user"
+                        ? "bg-[#006d77] text-white"
+                        : "bg-white dark:bg-gray-800"
+                    }`}
+                  >
+                    <p className="text-sm whitespace-pre-wrap">
+                      {message.content}
+                    </p>
+                    <p
+                      className={`text-xs mt-1 ${
+                        message.sender === "user"
+                          ? "text-white/70"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
+                      {/* {message?.timestamp?.toLocaleTimeString()} */}
+                    </p>
+                  </Card>
+                </div>
+              </motion.div>
+            ))}
 
           {isLoading && (
             <motion.div

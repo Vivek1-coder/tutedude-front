@@ -31,7 +31,6 @@ const Layout = ({ children }) => {
           <Navbar />
           <main className="flex-grow">{children}</main>
           {/* <Toaster /> */}
-          <Footer />
         </div>
       </body>
     </html>

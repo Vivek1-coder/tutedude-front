@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { Link, useLocation } from "react-router-dom";
 import { useRouter } from "next/navigation";
+
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { ThemeToggle } from "./ThemeToggle";
@@ -9,8 +10,18 @@ import { Menu, X, Activity } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 export const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const pathname = usePathname();
+  useEffect(() => {
+    const checkAuth = async () => {
+      const res = await fetch("/api/auth/status");
+      const data = await res.json();
+      setIsLoggedIn(data.isLoggedIn);
+      setLoading(false);
+    };
+    checkAuth();
+  }, [pathname]);
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname(); // replaces useLocation()
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/u/chat", label: "Chat" },
@@ -20,14 +31,14 @@ export const Navbar = () => {
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
     router.push("/login");
+    setIsLoggedIn(false);
   };
-  
+
   return (
     <nav className="w-full  bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Button onClick={() => handleLogout()}>Log OUt</Button>
             <Link href="/" className="flex items-center space-x-2">
               <Activity className="h-8 w-8 text-[#006d77]" />
               <span className="text-xl font-bold text-[#293241] dark:text-white">
@@ -53,19 +64,25 @@ export const Navbar = () => {
             ))}
             <div className="flex items-center space-x-4">
               <ThemeToggle />
-              <Link href="/login">
-                <Button variant="outline" size="sm">
-                  Login
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button
-                  className="bg-[#006d77] hover:bg-[#006d77]/90"
-                  size="sm"
-                >
-                  Sign Up
-                </Button>
-              </Link>
+              {!isLoggedIn ? (
+                <>
+                  <Link href="/login">
+                    <Button variant="outline" size="sm">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button
+                      className="bg-[#006d77] hover:bg-[#006d77]/90"
+                      size="sm"
+                    >
+                      Sign Up
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <Button onClick={() => handleLogout()}>Log Out</Button>
+              )}
             </div>
           </div>
 

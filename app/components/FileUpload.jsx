@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { X, Upload, FileText, CheckCircle } from "lucide-react";
 import axios from "axios";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 // interface FileUploadProps {
 //   onClose: () => void;
 // }
@@ -15,6 +16,10 @@ export const FileUpload = ({ onClose }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
 
   const onDrop = useCallback(async (file) => {
     console.log("Files dropped:", file);
@@ -38,6 +43,15 @@ export const FileUpload = ({ onClose }) => {
       // 2. Post the FormData
       console.log("sending req.");
       const response = await axios.post("/api/file-analyze", formData);
+      const res = response.data;
+      console.log(res);
+      const { id, metric, remarks } = res;
+      if (id) {
+        params.set("id", id);
+        router.replace(`${pathname}?${params.toString()}`);
+      }
+
+      console.log("helloooo ", res);
       console.log("Upload success:", response.data);
     } catch (err) {
       console.error("Upload error:", err.response?.data || err.message);

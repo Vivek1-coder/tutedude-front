@@ -14,7 +14,9 @@ export async function POST(request) {
   const res = await axios.post(`${apiUrl}/pdfs/analyze-lab-report`, forwardFd, {
     headers: { cookie: token },
   });
-  return res;
-  console.log();
-  return NextResponse.json({ message: "hello" }, { status: 200 });
+
+  // return res;
+  // console.log();
+  console.log(JSON.stringify(res.data));
+  return NextResponse.json(res.data, { status: 200 });
 }

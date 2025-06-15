@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -25,6 +25,7 @@ import {
 } from "recharts";
 import { Upload, FileText, Calendar, TrendingUp, Download } from "lucide-react";
 import { FileUpload } from "@/components/FileUpload";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 // interface Report {
 //   id: string;
@@ -77,6 +78,10 @@ const trendData = [
 
 const Dashboard = () => {
   const [showUpload, setShowUpload] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
 
   // const { data: reports } = useQuery({
   //   queryKey: ["reports"],
@@ -96,6 +101,10 @@ const Dashboard = () => {
         return "bg-gray-500";
     }
   };
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (!id) return;
+  }, [pathname]);
 
   return (
     <div className="min-h-screen pt-18 bg-[#f0f3f4] dark:bg-gray-900 p-6">
