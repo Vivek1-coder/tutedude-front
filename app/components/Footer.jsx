@@ -60,7 +60,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom copyright */}
-      <div className="text-center min-w-full text-sm text-gray-300 bg-black">
+      <div className="text-center min-w-full text-sm text-gray-300 bg-gray-600 dark:bg-black">
         &copy; {new Date().getFullYear()} MedXplain. All rights reserved.
       </div>
     </footer>
