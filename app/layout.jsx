@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ToastContainer, toast } from "react-toastify";
 import Footer from "./components/Footer";
 
 const geistSans = Geist({
@@ -21,7 +22,7 @@ import React from "react";
 // import { Outlet } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 
-// import { Toaster } from "./components/ui/toaster";
+// import { Toaster } from "@components/ui/toaster";
 
 const Layout = ({ children }) => {
   return (
@@ -31,6 +32,18 @@ const Layout = ({ children }) => {
           <Navbar />
           <main className="flex-grow">{children}</main>
           {/* <Toaster /> */}
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />{" "}
         </div>
       </body>
     </html>

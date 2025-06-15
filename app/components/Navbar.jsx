@@ -17,7 +17,6 @@ export const Navbar = () => {
       const res = await fetch("/api/auth/status");
       const data = await res.json();
       setIsLoggedIn(data.isLoggedIn);
-      setLoading(false);
     };
     checkAuth();
   }, [pathname]);
@@ -30,6 +29,7 @@ export const Navbar = () => {
   const router = useRouter();
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
+    toast("Logged Out!");
     router.push("/login");
     setIsLoggedIn(false);
   };

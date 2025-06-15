@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,6 +42,8 @@ const Login = () => {
         // Backend returned a 4xx/5xx
         // setError(json.error || "Signin failed");
         return;
+      } else {
+        toast("Login Successful");
       }
 
       // Success: you now have { id, name, email } in json
@@ -59,8 +62,8 @@ const Login = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
-  {/* Background Layer */}
-  <div
+      {/* Background Layer */}
+      <div
         className="absolute inset-0 z-0 bg-cover bg-center dark:hidden"
         style={{
           backgroundImage:
@@ -68,26 +71,26 @@ const Login = () => {
           filter: "blur(8px)",
         }}
       />
-   <div
-    className="absolute inset-0 z-0 bg-cover bg-center hidden dark:block"
-    style={{
-      backgroundImage:
-        "url('https://static.vecteezy.com/system/resources/previews/006/712/985/original/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg')",
-      filter: "blur(10px)",
-    }}
-  />
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center hidden dark:block"
+        style={{
+          backgroundImage:
+            "url('https://static.vecteezy.com/system/resources/previews/006/712/985/original/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg')",
+          filter: "blur(10px)",
+        }}
+      />
 
-  {/* Dark overlay to dim the background */}
-  <div className="absolute inset-0 z-0 bg-black/40" />
+      {/* Dark overlay to dim the background */}
+      <div className="absolute inset-0 z-0 bg-black/40" />
 
-  {/* Main Content (Login Card) */}
-  <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8 }}
-    className="z-10 w-full max-w-md"
-  >
-    {/* <div className="min-h-screen pt-10 bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
+      {/* Main Content (Login Card) */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="z-10 w-full max-w-md"
+      >
+        {/* <div className="min-h-screen pt-10 bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -99,7 +102,9 @@ const Login = () => {
             <CardTitle className="text-2xl font-bold text-[#293241] dark:text-white">
               Welcome Back
             </CardTitle>
-            <CardDescription className="font-semibold text-gray-600 dark:text-gray-300">Sign in to your EthicalMD account</CardDescription>
+            <CardDescription className="font-semibold text-gray-600 dark:text-gray-300">
+              Sign in to your EthicalMD account
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -185,7 +190,10 @@ const Login = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Button variant="outline" className="w-full hover:scale-105  cursor-pointer">
+                <Button
+                  variant="outline"
+                  className="w-full hover:scale-105  cursor-pointer"
+                >
                   <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
                     <path
                       fill="#4285f4"
@@ -206,7 +214,10 @@ const Login = () => {
                   </svg>
                   Google
                 </Button>
-                <Button variant="outline" className="w-full  hover:scale-105 cursor-pointer">
+                <Button
+                  variant="outline"
+                  className="w-full  hover:scale-105 cursor-pointer"
+                >
                   <img
                     src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
                     alt="Microsoft Logo"
@@ -228,8 +239,8 @@ const Login = () => {
             </p>
           </CardContent>
         </Card>
-        </motion.div>
-    </div>  
+      </motion.div>
+    </div>
     // </motion.div>
     // </div>
   );

@@ -16,6 +16,8 @@ import {
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { signup } from "../_lib/login-service";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+
 // interface SignupForm {
 //   name: string;
 //   email: string;
@@ -49,7 +51,8 @@ const Signup = () => {
 
       if (res.ok) {
         // 1️⃣ Feedback
-        alert(json.message);
+        // alert(json.message);
+        toast("User created!");
         // reset();
         // 2️⃣ Redirect
         router.push("/login");
@@ -76,17 +79,17 @@ const Signup = () => {
       />
 
       <div
-    className="absolute inset-0 z-0 bg-cover bg-center hidden dark:block"
-    style={{
-      backgroundImage:
-        "url('https://static.vecteezy.com/system/resources/previews/006/712/985/original/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg')",
-      filter: "blur(10px)",
-    }}
-  />
-    
+        className="absolute inset-0 z-0 bg-cover bg-center hidden dark:block"
+        style={{
+          backgroundImage:
+            "url('https://static.vecteezy.com/system/resources/previews/006/712/985/original/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg')",
+          filter: "blur(10px)",
+        }}
+      />
+
       {/* Dark overlay to dim the background */}
       <div className="absolute inset-0 z-0 bg-black/40" />
-    
+
       {/* Main Content (Login Card) */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -94,10 +97,7 @@ const Signup = () => {
         transition={{ duration: 0.8 }}
         className="z-10 w-full max-w-md"
       >
-
-      
-
-    {/* <div className="min-h-screen bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 pt-10">
+        {/* <div className="min-h-screen bg-gradient-to-br from-[#f0f3f4] to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 pt-10">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}

@@ -11,6 +11,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 // interface FileUploadProps {
 //   onClose: () => void;
 // }
+import { ToastContainer, toast } from "react-toastify";
 
 export const FileUpload = ({ onClose }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -48,6 +49,7 @@ export const FileUpload = ({ onClose }) => {
       const { _id: id, metric, remarks } = res;
       console.log("hello boii", res);
       if (id) {
+        toast("File Uploaded and Analsis Completed!");
         router.replace(`${pathname}/${id}`);
       }
 
