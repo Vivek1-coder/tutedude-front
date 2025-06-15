@@ -1,8 +1,8 @@
 // app/api/signin/route.js
 import { NextResponse } from "next/server";
 import { signin } from "@lib/login-service";
-const apiUrl = "http://localhost:4000";
-// const apiUrl = "https://med-xplain-backend.onrender.com";
+// const apiUrl = "http://localhost:4000";
+const apiUrl = "https://med-xplain-backend.onrender.com";
 
 import axios from "axios";
 export async function POST(request) {

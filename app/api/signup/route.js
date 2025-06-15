@@ -1,8 +1,8 @@
 // app/api/signup/route.ts
 import { NextResponse } from "next/server";
 import { signup } from "@lib/login-service.js"; // your existing service
-const apiUrl = "http://localhost:4000";
-// const apiUrl = "https://med-xplain-backend.onrender.com";
+// const apiUrl = "http://localhost:4000";
+const apiUrl = "https://med-xplain-backend.onrender.com";
 
 import axios from "axios";
 export async function POST(request) {

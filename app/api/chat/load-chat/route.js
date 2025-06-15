@@ -1,7 +1,7 @@
-const apiUrl = "http://localhost:4000";
+// const apiUrl = "http://localhost:4000";
 import axios from "axios";
 import { NextResponse } from "next/server";
-// const apiUrl = "https://med-xplain-backend.onrender.com";
+const apiUrl = "https://med-xplain-backend.onrender.com";
 
 export async function POST(request) {
   const token = request.cookies.get("token")?.value;
