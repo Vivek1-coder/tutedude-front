@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Suspense } from "react";
 
 const options = [
   {
@@ -64,12 +63,7 @@ const Landing = () => {
   );
 };
 
+export default Landing;
 
-export default function Page() {
-  return (
-    <Suspense fallback={<div>Loading chat...</div>}>
-      <Landing />
-    </Suspense>
-  );
-}
+
 
