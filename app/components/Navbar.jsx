@@ -12,12 +12,14 @@ import Link from "next/link";
 export const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
+ 
   useEffect(() => {
     const checkAuth = async () => {
+
       const res = await fetch("/api/auth/status");
       const data = await res.json();
       setIsLoggedIn(data.isLoggedIn);
-      setLoading(false);
+   
     };
     checkAuth();
   }, [pathname]);
