@@ -77,26 +77,22 @@ const Chat = () => {
     console.log(res);
   }
 
-const deleteChat = async (chatId) => {
-  try {
-    const response = await axios.delete("/api/chat/delete-chat", {
-      data: { chatId }, // axios uses `data` for DELETE body
-    });
+  const deleteChat = async (chatId) => {
+    try {
+      const response = await axios.delete("/api/chat/delete-chat", {
+        data: { chatId }, // axios uses `data` for DELETE body
+      });
 
-    setOldChats((prevChats) =>
-      prevChats.filter((chat) => chat._id !== chatId)
-    );
-  } catch (error) {
-    console.error(
-      "Failed to delete chat:",
-      error.response?.data || error.message
-    );
-  }
-};
-
-
-
-
+      setOldChats((prevChats) =>
+        prevChats.filter((chat) => chat._id !== chatId)
+      );
+    } catch (error) {
+      console.error(
+        "Failed to delete chat:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
   useEffect(() => {
     // define your async function inside
@@ -169,7 +165,7 @@ const deleteChat = async (chatId) => {
     const { answer, explaination } = res.data.response;
     const aiMessage = {
       id: (Date.now() + 1).toString(),
-      content: `answer: ${answer}\nexplaination: ${explaination}`,
+      content: `Answer: ${answer}\n\nExplaination: ${explaination}`,
       sender: "ai",
       timestamp: new Date(),
     };
