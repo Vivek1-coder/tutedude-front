@@ -70,7 +70,17 @@ const Chat = () => {
     console.log("gay", id);
     const res = await axios.post(`/api/chat/load-chat`, { id }, {});
     console.log(res.data);
-    setMessages(res.data.messages);
+    let data = res.data.messages;
+    data = data.map((obj) => {
+      if (obj.role === "user") return obj;
+
+      let content = obj.content;
+      content = JSON.parse(content);
+      content = `Answer: ${content.answer}\n\nExplaination: ${content.explaination}`;
+      obj.content = content;
+      return obj;
+    });
+    setMessages(data);
     params.set("chatId", res.data._id);
     router.replace(`${pathname}?${params.toString()}`);
 
