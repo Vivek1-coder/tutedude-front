@@ -12,6 +12,7 @@ import { Send, Bot, User } from "lucide-react";
 import axios from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Loader from "@components/Loader";
+import { toast } from "react-toastify";
 const Chat = () => {
   const router = useRouter();
   const pathname = usePathname();

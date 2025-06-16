@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -25,6 +26,9 @@ import {
 import { Upload, FileText, Calendar, TrendingUp, Download } from "lucide-react";
 import { FileUpload } from "@/components/FileUpload";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import Loader from "@/components/Loader";
+import { toast } from "react-toastify";
 
 const chartData = [
   { name: "Glucose", value: 95, normal: 100 },
@@ -317,9 +321,6 @@ const Dashboard = () => {
     </div>
   );
 };
-
-import { Suspense } from "react";
-import Loader from "@/components/Loader";
 
 function Page() {
   return (
