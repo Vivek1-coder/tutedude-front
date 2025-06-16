@@ -18,14 +18,14 @@ const options = [
 
 const Landing = () => {
   const router = useRouter();
-  const hasReloaded = useRef(false);
+  // const hasReloaded = useRef(false);
 
-  useEffect(() => {
-    if (!hasReloaded.current) {
-      hasReloaded.current = true;
-      window.location.reload();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!hasReloaded.current) {
+  //     hasReloaded.current = true;
+  //     window.location.reload();
+  //   }
+  // }, []);
 
   return (
     <div
