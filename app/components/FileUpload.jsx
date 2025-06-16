@@ -56,8 +56,10 @@ export const FileUpload = ({ onClose }) => {
       console.log("helloooo ", res);
       console.log("Upload success:", response.data);
     } catch (err) {
+      toast("Analysis  failed");
       console.error("Upload error:", err.response?.data || err.message);
     }
+
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
         if (prev >= 100) {
@@ -82,6 +84,7 @@ export const FileUpload = ({ onClose }) => {
       ],
     },
     multiple: false,
+    disabled: isUploading,
   });
 
   return (

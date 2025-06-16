@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -18,9 +18,15 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-2">Services</h3>
           <ul className="space-y-1 text-sm">
-            <li><Link href="#">AI Chat</Link></li>
-            <li><Link href="#">Real-time Responses</Link></li>
-            <li><Link href="#">User Insights</Link></li>
+            <li>
+              <Link href="#">AI Chat</Link>
+            </li>
+            <li>
+              <Link href="#">Real-time Responses</Link>
+            </li>
+            <li>
+              <Link href="#">User Insights</Link>
+            </li>
           </ul>
         </div>
 
@@ -28,8 +34,8 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-2">Contact Us</h3>
           <ul className="space-y-1 text-sm">
-            <li>Email: support@example.com</li>
-            <li>Phone: +91 1234567890</li>
+            <li>Email: xyz@example.com</li>
+            <li>Phone: +91 1234567xxx</li>
           </ul>
         </div>
 
@@ -38,22 +44,12 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-2">Follow Us</h3>
           <div className="flex items-center space-x-4 mt-2">
             <a
-              href=""
+              href="https://github.com/Aayush1Singh/tutedude-front"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-gray-400 text-xl"
             >
               <FaGithub />
-            </a>
-            <a href=""
-                target="_blank"
-                rel="noopener noreferrer">
-                <FaFacebook />
-            </a>
-            <a href=""
-                target="_blank"
-                rel="noopener noreferrer">
-                <FaLinkedin />
             </a>
           </div>
         </div>
@@ -61,7 +57,7 @@ const Footer = () => {
 
       {/* Bottom copyright */}
       <div className="text-center min-w-full text-sm text-gray-300 bg-gray-600 dark:bg-black">
-        &copy; {new Date().getFullYear()} MedXplain. All rights reserved.
+        &copy; {new Date().getFullYear()} MedicalMD. All rights reserved.
       </div>
     </footer>
   );

@@ -17,6 +17,7 @@ import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { signup } from "../_lib/login-service";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 // interface SignupForm {
 //   name: string;
@@ -28,6 +29,7 @@ import { ToastContainer, toast } from "react-toastify";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setLoader] = useState(false);
   const {
     register,
     handleSubmit,
@@ -42,11 +44,13 @@ const Signup = () => {
   const onSubmit = async (data) => {
     console.log("Signup data:", data);
     try {
+      setLoader(true);
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+      setLoader(false);
       const json = await res.json();
 
       if (res.ok) {
@@ -57,11 +61,12 @@ const Signup = () => {
         // 2️⃣ Redirect
         router.push("/login");
       } else {
-        alert(json.error);
+        toast(json.error);
       }
     } catch (e) {
       console.error(e);
-      alert("Network error");
+      toast("Network error");
+      // alert("Network error");
     }
     // Handle signup logic here
   };
@@ -178,6 +183,7 @@ const Signup = () => {
                       },
                     })}
                   />
+
                   <Button
                     type="button"
                     variant="ghost"
@@ -234,13 +240,15 @@ const Signup = () => {
                   </p>
                 )}
               </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-[#006d77] hover:bg-[#006d77]/90  cursor-pointer hover:scale-105 dark:text-gray-200"
-              >
-                Create Account
-              </Button>
+              {isLoading && <Loader></Loader>}
+              {!isLoading && (
+                <Button
+                  type="submit"
+                  className="w-full bg-[#006d77] hover:bg-[#006d77]/90  cursor-pointer hover:scale-105 dark:text-gray-200"
+                >
+                  Create Account
+                </Button>
+              )}
             </form>
 
             <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400 font-semibold">

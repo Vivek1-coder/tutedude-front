@@ -1,5 +1,5 @@
 "use client";
-
+import ChatAll from "../../components/ChatALL";
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../../components/ui/button";
@@ -7,68 +7,41 @@ import { Suspense } from "react";
 import { Input } from "../../components/ui/input";
 import { Card } from "../../components/ui/card";
 import { EmptyChatPlaceholder } from "../../components/EmptyChatPlaceholder";
-import {
-  ChatGear,
-  UploadCloud,
-  Activity,
-  DeleteIcon,
-  Trash,
-} from "lucide-react";
-import {
-  Send,
-  Bot,
-  User,
-  Heart,
-  Brain,
-  Thermometer,
-  Weight,
-} from "lucide-react";
+import Loading from "../../loading";
+import { Send, Bot, User } from "lucide-react";
 import axios from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-const quickSymptoms = [
-  {
-    icon: Heart,
-    label: "Heart Palpitations",
-    prompt:
-      "I am experiencing heart palpitations and saw a video saying it’s normal. Should I be concerned?",
-  },
-  { icon: Brain, label: "Headache", prompt: "I have a persistent headache" },
-  {
-    icon: Thermometer,
-    label: "Fever",
-    prompt: "I have a fever and feel unwell",
-  },
-  {
-    icon: Weight,
-    label: "Weight Loss study",
-    prompt:
-      "Investigate sudden weight loss without lifestyle changes. (Doctor – Differential Analysis)",
-  },
-];
-
+import Loader from "@components/Loader";
 const Chat = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const [messages, setMessages] = useState([]);
-
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [compLoading, isCompLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   async function GenerateNewSession() {
+    isCompLoading(true);
     const res = await axios.post("/api/chat/new-session");
+    isCompLoading(false);
     console.log(res);
     params.set("chatId", res.data.chatId);
     router.replace(`${pathname}?${params.toString()}`);
     setMessages([]);
+    toast("Session created");
     // return res.data;
   }
-  const [oldChats, setOldChats] = useState([]);
   async function loadOldChat(id) {
-    console.log("gay", id);
+    isCompLoading(true);
     const res = await axios.post(`/api/chat/load-chat`, { id }, {});
+    isCompLoading(false);
+    if (res.status != 200) {
+      toast("Failed to load old chat");
+    }
+
     console.log(res.data);
     let data = res.data.messages;
     data = data.map((obj) => {
@@ -83,54 +56,8 @@ const Chat = () => {
     setMessages(data);
     params.set("chatId", res.data._id);
     router.replace(`${pathname}?${params.toString()}`);
-
     console.log(res);
   }
-
-  const deleteChat = async (chatId) => {
-    try {
-      const response = await axios.delete("/api/chat/delete-chat", {
-        data: { chatId }, // axios uses `data` for DELETE body
-      });
-
-      setOldChats((prevChats) =>
-        prevChats.filter((chat) => chat._id !== chatId)
-      );
-    } catch (error) {
-      console.error(
-        "Failed to delete chat:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  useEffect(() => {
-    // define your async function inside
-    const loadPrevChats = async () => {
-      try {
-        const res = await axios.post("/api/chat/load-prev-chats", {});
-        setOldChats(res.data);
-        if (res.data.length > 0) {
-          console.log(res.data);
-          const temp_initial_id = res.data[0]._id;
-          // console.log(temp_initial_id);
-          // params.set("chatId", temp_initial_id);
-          // router.replace(`${pathname}?${params.toString()}`);
-          console.log("intially load , loading chat_id", temp_initial_id);
-          loadOldChat(temp_initial_id);
-        } else {
-          GenerateNewSession();
-        }
-
-        console.log(res);
-      } catch (err) {
-        console.error("Failed to load previous chats:", err);
-      }
-    };
-
-    loadPrevChats();
-  }, []);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -150,18 +77,9 @@ const Chat = () => {
       role: "user",
       timestamp: new Date(),
     };
-
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
-
-    // Simulate AI response
-    //     setTimeout(() => {
-
-    //       setMessages((prev) => [...prev, aiMessage]);
-    //       setIsLoading(false);
-    //     }, 2000);
-
     const chatId = searchParams.get("chatId");
     if (!chatId) {
       return;
@@ -171,7 +89,6 @@ const Chat = () => {
       query: messageContent,
       chatId,
     });
-    console.log(res);
     const { answer, explaination } = res.data.response;
     const aiMessage = {
       id: (Date.now() + 1).toString(),
@@ -181,28 +98,10 @@ const Chat = () => {
     };
     setMessages((prev) => [...prev, aiMessage]);
     setIsLoading(false);
-
-    console.log(res);
   };
-
-  const handleQuickSymptom = (prompt) => {
-    handleSend(prompt);
-  };
-  // useEffect(() => {
-  //   setMessages([
-  //     {
-  //       id: "1",
-  //       content:
-  //         "Hello! I'm your EthicalMD assistant. How can I help you today? Please describe your symptoms or health concerns.",
-  //       sender: "ai",
-  //       timestamp: new Date(), // Now safe: runs only on client
-  //     },
-  //   ]);
-  // }, []);
 
   return (
     <div className="min-h-screen pt-16 flex bg-[#f0f3f4] dark:bg-gray-900 h-screen">
-      {/* <EmptyChatPlaceholder></EmptyChatPlaceholder> */}
       {/* Sidebar */}
       <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
         <div>
@@ -219,36 +118,22 @@ const Chat = () => {
         </h2>
 
         <div className="space-y-2">
-          {oldChats?.map((oldChat) => (
-            <Card
-              key={oldChat._id}
-              className="flex items-center justify-between w-full p-2 mb-2 border rounded-md shadow-sm hover:bg-gray-100"
-            >
-              <div
-                className="flex-1 cursor-pointer text-left truncate"
-                onClick={() => loadOldChat(oldChat._id)}
-              >
-                {oldChat?.title || "Untitled Chat"}
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => deleteChat(oldChat._id)}
-                className="text-red-500 hover:text-red-700 hover:bg-gray-200 cursor-pointer"
-              >
-                <Trash className="w-4 h-4" />
-              </Button>
-            </Card>
-          ))}
+          <Suspense fallback={<Loading />}>
+            <ChatAll
+              GenerateNewSession={GenerateNewSession}
+              loadOldChat={loadOldChat}
+            />
+          </Suspense>
         </div>
       </div>
-
       {/* Chat Area */}
       <div className="flex-1 flex flex-col overflow-y-auto">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages?.length === 0 && <EmptyChatPlaceholder />}
-          {messages?.length > 0 &&
+          {compLoading && <Loader></Loader>}
+          {!compLoading && messages?.length === 0 && <EmptyChatPlaceholder />}
+          {!compLoading &&
+            messages?.length > 0 &&
             messages.map((message) => (
               <motion.div
                 key={message._id}

@@ -10,8 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@components/ui/button";
-import { Badge } from "@components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import axios from "axios";
 import {
   BarChart,
@@ -27,41 +25,6 @@ import {
 import { Upload, FileText, Calendar, TrendingUp, Download } from "lucide-react";
 import { FileUpload } from "@/components/FileUpload";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
-// interface Report {
-//   id: string;
-//   name: string;
-//   type: 'lab' | 'imaging' | 'consultation';
-//   date: string;
-//   status: 'processing' | 'completed' | 'error';
-//   confidence?: number;
-// }
-
-const mockReports = [
-  {
-    id: "1",
-    name: "Blood Test Results",
-    type: "lab",
-    date: "2024-01-15",
-    status: "completed",
-    confidence: 94,
-  },
-  {
-    id: "2",
-    name: "Cholesterol Panel",
-    type: "lab",
-    date: "2024-01-10",
-    status: "completed",
-    confidence: 89,
-  },
-  {
-    id: "3",
-    name: "X-Ray Chest",
-    type: "imaging",
-    date: "2024-01-08",
-    status: "processing",
-  },
-];
 
 const chartData = [
   { name: "Glucose", value: 95, normal: 100 },
@@ -84,10 +47,18 @@ const Dashboard = () => {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const [reports, setReports] = useState([]);
+  const [isLoadingOld, setLoaderOld] = useState(false);
   useEffect(() => {
     console.log("ioioio");
     async function f() {
+      setLoaderOld(true);
       const res = await axios.post("/api/load-report/all");
+      setLoaderOld(false);
+      if (res.status == 200) {
+        toast("Old Analysis Loaded");
+      } else {
+        toast("Not able to Load Old Analysis");
+      }
       console.log(res);
       setReports(res.data.summaries_id_Array);
     }
@@ -281,54 +252,56 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4 grid grid-cols-1 gap-2">
-                {reports?.map((report) => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        router.replace(`${pathname}/${report.ID}`);
-                      }}
-                    >
-                      Lab Report Analysis
-                    </Button>
-                  );
-                  // <div
-                  //   key={report.id}
-                  //   className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
-                  // >
-                  //   <div className="flex items-center space-x-4">
-                  //     <div className="w-10 h-10 bg-[#006d77]/10 rounded-lg flex items-center justify-center">
-                  //       <FileText className="w-5 h-5 text-[#006d77]" />
-                  //     </div>
-                  //     <div>
-                  //       <h3 className="font-medium text-[#293241] dark:text-white">
-                  //         {report.name}
-                  //       </h3>
-                  //       <p className="text-sm text-[#293241]/80 dark:text-gray-400">
-                  //         {report.date} • {report.type}
-                  //       </p>
-                  //     </div>
-                  //   </div>
-                  //   <div className="flex items-center space-x-4">
-                  //     {report.confidence && (
-                  //       <div className="text-right">
-                  //         <p className="text-sm font-medium text-[#293241] dark:text-white">
-                  //           {report.confidence}% confidence
-                  //         </p>
-                  //         <Progress
-                  //           value={report.confidence}
-                  //           className="w-20"
-                  //         />
-                  //       </div>
-                  //     )}
-                  //     <Badge className={getStatusColor(report.status)}>
-                  //       {report.status}
-                  //     </Badge>
-                  //     <Button variant="outline" size="sm">
-                  //       View
-                  //     </Button>
-                  //   </div>
-                  // </div>;
-                })}
+                {isLoadingOld && <Loader></Loader>}
+                {!isLoadingOld &&
+                  reports?.map((report) => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          router.replace(`${pathname}/${report.ID}`);
+                        }}
+                      >
+                        Lab Report Analysis
+                      </Button>
+                    );
+                    // <div
+                    //   key={report.id}
+                    //   className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                    // >
+                    //   <div className="flex items-center space-x-4">
+                    //     <div className="w-10 h-10 bg-[#006d77]/10 rounded-lg flex items-center justify-center">
+                    //       <FileText className="w-5 h-5 text-[#006d77]" />
+                    //     </div>
+                    //     <div>
+                    //       <h3 className="font-medium text-[#293241] dark:text-white">
+                    //         {report.name}
+                    //       </h3>
+                    //       <p className="text-sm text-[#293241]/80 dark:text-gray-400">
+                    //         {report.date} • {report.type}
+                    //       </p>
+                    //     </div>
+                    //   </div>
+                    //   <div className="flex items-center space-x-4">
+                    //     {report.confidence && (
+                    //       <div className="text-right">
+                    //         <p className="text-sm font-medium text-[#293241] dark:text-white">
+                    //           {report.confidence}% confidence
+                    //         </p>
+                    //         <Progress
+                    //           value={report.confidence}
+                    //           className="w-20"
+                    //         />
+                    //       </div>
+                    //     )}
+                    //     <Badge className={getStatusColor(report.status)}>
+                    //       {report.status}
+                    //     </Badge>
+                    //     <Button variant="outline" size="sm">
+                    //       View
+                    //     </Button>
+                    //   </div>
+                    // </div>;
+                  })}
               </div>
             </CardContent>
           </Card>
@@ -342,6 +315,7 @@ const Dashboard = () => {
 };
 
 import { Suspense } from "react";
+import Loader from "@/components/Loader";
 
 function Page() {
   return (

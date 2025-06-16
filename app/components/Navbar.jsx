@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 // import { Link, useLocation } from "react-router-dom";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
 
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";

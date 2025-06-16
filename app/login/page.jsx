@@ -16,9 +16,11 @@ import {
 } from "@/components/ui/card";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "@/components/Loader";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setLoader] = useState(false);
   const {
     register,
     handleSubmit,
@@ -30,12 +32,13 @@ const Login = () => {
     // setError(null);
 
     try {
+      setLoader(true);
       const res = await fetch("/api/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
+      setLoader(false);
       const json = await res.json();
 
       if (!res.ok) {
@@ -168,13 +171,15 @@ const Login = () => {
                   </p>
                 )}
               </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-[#006d77] hover:bg-[#006d77]/90 hover:scale-105 cursor-pointer text-gray-200"
-              >
-                Sign In
-              </Button>
+              {isLoading && <Loader></Loader>}
+              {!isLoading && (
+                <Button
+                  type="submit"
+                  className="w-full bg-[#006d77] hover:bg-[#006d77]/90 hover:scale-105 cursor-pointer text-gray-200"
+                >
+                  Sign In
+                </Button>
+              )}
             </form>
 
             <div className="mt-6">
