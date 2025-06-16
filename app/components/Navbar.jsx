@@ -41,7 +41,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link
+            <a
               href="/"
               className="flex items-center space-x-2"
               prefetch={false}
@@ -50,13 +50,13 @@ export const Navbar = () => {
               <span className="text-xl font-bold text-[#293241] dark:text-white">
                 EthicalMD
               </span>
-            </Link>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.href}
                 href={item.href}
                 className={`text-sm font-medium transition-colors hover:text-[#006d77] ${
@@ -66,7 +66,7 @@ export const Navbar = () => {
                 }`}
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
             <div className="flex items-center space-x-4">
               <ThemeToggle />
@@ -77,14 +77,14 @@ export const Navbar = () => {
                       Login
                     </Button>
                   </Link>
-                  <Link href="/signup">
+                  <a href="/signup">
                     <Button
                       className="bg-[#006d77] hover:bg-[#006d77]/90 dark:text-gray-200 dark:bg-[#006d85]"
                       size="sm"
                     >
                       Sign Up
                     </Button>
-                  </Link>
+                  </a>
                 </>
               ) : (
                 <Button onClick={() => handleLogout()}>Log Out</Button>
@@ -119,7 +119,7 @@ export const Navbar = () => {
           >
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
-                <Link
+                <a
                   key={item.href}
                   href={item.href}
                   className={`text-sm font-medium transition-colors ${
@@ -130,22 +130,22 @@ export const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
-                </Link>
+                </a>
               ))}
               <div className="flex flex-col space-y-2 pt-4">
-                <Link href="/login" onClick={() => setIsOpen(false)}>
+                <a href="/login" onClick={() => setIsOpen(false)}>
                   <Button variant="outline" size="sm" className="w-full">
                     Login
                   </Button>
-                </Link>
-                <Link href="/signup" onClick={() => setIsOpen(false)}>
+                </a>
+                <a href="/signup" onClick={() => setIsOpen(false)}>
                   <Button
                     className="bg-[#006d77] hover:bg-[#006d77]/90 w-full"
                     size="sm"
                   >
                     Sign Up
                   </Button>
-                </Link>
+                </a>
               </div>
             </div>
           </motion.div>
