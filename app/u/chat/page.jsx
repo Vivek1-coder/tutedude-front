@@ -114,7 +114,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="min-h-screen pt-16 flex bg-[#f0f3f4] dark:bg-gray-900 h-screen">
+    <div className="h-full flex bg-[#f0f3f4] dark:bg-gray-900 ">
       {/* Sidebar */}
       <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
         <div>

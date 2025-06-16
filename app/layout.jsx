@@ -28,23 +28,55 @@ const Layout = ({ children }) => {
   return (
     <html>
       <body>
-        <div className="min-h-screen bg-background flex flex-col">
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          {/* <Toaster /> */}
-          <ToastContainer
-            position="top-right"
-            autoClose={2000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />{" "}
+        <div className="flex flex-col h-screen bg-background">
+          {/* Navbar never grows or shrinks */}
+          <div className="flex-none">
+            <Navbar />
+          </div>
+
+          {/* Content area takes all remaining space */}
+          <div className="flex flex-1 overflow-hidden">
+            {/* 
+      main should grow to fill available space,
+      and if its content scrolls, clamp it with overflow-auto 
+    */}
+            <main className="flex-1 overflow-auto">{children}</main>
+            {/* ToastContainer can sit as an overlay if you want,
+        or you can absolutely position it inside this same flex-1 */}
+            <ToastContainer
+              position="bottom-left"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />{" "}
+          </div>
         </div>
+        {/* <div className="h-screen bg-background grid grid-cols-1 gap-1 ">
+          <div className="h-fit">
+            <Navbar />
+          </div>
+          <div className="flex h-full">
+            <main className=" flex-grow">{children}</main>
+            <ToastContainer
+              position="bottom-left"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />{" "}
+          </div>
+        </div> */}
       </body>
     </html>
   );

@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
+    <div className="relative min-h-full w-full overflow-hidden flex items-center justify-center px-4">
       {/* Background Layer */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center dark:hidden"
@@ -183,7 +183,7 @@ const Login = () => {
               )}
             </form>
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
@@ -232,7 +232,7 @@ const Login = () => {
                   Microsoft
                 </Button>
               </div>
-            </div>
+            </div> */}
 
             <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300 font-semibold">
               Don't have an account?{" "}

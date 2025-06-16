@@ -74,7 +74,7 @@ export function EmptyChatPlaceholder() {
                 </CardHeader>
                 <CardContent>
                   <CardDescription>{f.description}</CardDescription>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     size="sm"
                     className="mt-4"
@@ -84,7 +84,7 @@ export function EmptyChatPlaceholder() {
                     }}
                   >
                     {f.title.split(" ")[0]}
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             </motion.div>

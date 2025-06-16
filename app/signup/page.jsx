@@ -73,7 +73,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4">
+    <div className="relative min-h-full w-full overflow-hidden flex items-center justify-center px-4">
       {/* Background Layer */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center dark:hidden"

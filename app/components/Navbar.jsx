@@ -37,14 +37,14 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="w-full  bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 fixed top-0 z-50">
+    <nav className="w-full   bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <a
               href="/"
               className="flex items-center space-x-2"
-              prefetch={false}
+              // prefetch={false}
             >
               <Activity className="h-8 w-8 text-[#006d77]" />
               <span className="text-xl font-bold text-[#293241] dark:text-white">

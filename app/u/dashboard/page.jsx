@@ -95,7 +95,7 @@ const Dashboard = () => {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen pt-18 bg-[#f0f3f4] dark:bg-gray-900 p-6">
+    <div className="h-full pt-2 bg-[#f0f3f4] dark:bg-gray-900  overflow-y-scroll">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <motion.div
