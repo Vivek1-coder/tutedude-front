@@ -15,6 +15,6 @@ export function middleware(request) {
 
   return NextResponse.next(); // ✅ always return a valid response
 }
-export const config = {
-  matcher: ["/u/:path*", "/login", "/signup"],
-};
+// export const config = {
+//   matcher: ["/u/:path*", "/login", "/signup"],
+// };
