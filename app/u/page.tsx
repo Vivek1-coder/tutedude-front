@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 const options = [
   {
     label: "Chat",
@@ -18,14 +18,15 @@ const options = [
 
 const Landing = () => {
   const router = useRouter();
-  useEffect(() => {
-    const hasRefreshed = sessionStorage.getItem("hasRefreshed");
+  const hasReloaded = useRef(false);
 
-    if (!hasRefreshed) {
-      sessionStorage.setItem("hasRefreshed", "true");
-      window.location.reload(); // ✅ refreshes the page once
+  useEffect(() => {
+    if (!hasReloaded.current) {
+      hasReloaded.current = true;
+      window.location.reload();
     }
   }, []);
+
   return (
     <div
       className="relative h-screen flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat dark:bg-black"
@@ -56,6 +57,7 @@ const Landing = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {options.map((option) => (
             <Link
+              prefetch={false}
               href={option.path}
               key={option.label}
               className="w-full p-6 sm:p-8 rounded-xl shadow-md backdrop-blur-md transition-all hover:scale-105 hover:shadow-xl
