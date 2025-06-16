@@ -1,8 +1,8 @@
 "use client";
-import ChatAll from "../../components/ChatALL";
+import ChatAll from "@components/ChatAll";
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Button } from "../../components/ui/button";
+import { Button } from "@components/ui/button";
 import { Suspense } from "react";
 import { Input } from "../../components/ui/input";
 import { Card } from "../../components/ui/card";
