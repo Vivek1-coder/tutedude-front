@@ -56,8 +56,7 @@ const Landing = () => {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {options.map((option) => (
-            <Link
-              prefetch={false}
+            <a
               href={option.path}
               key={option.label}
               className="w-full p-6 sm:p-8 rounded-xl shadow-md backdrop-blur-md transition-all hover:scale-105 hover:shadow-xl
@@ -74,7 +73,7 @@ const Landing = () => {
               <span className="text-base opacity-90 text-center">
                 {option.description}
               </span>
-            </Link>
+            </a>
           ))}
         </div>
       </div>
