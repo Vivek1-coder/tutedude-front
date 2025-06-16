@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useEffect } from "react";
 const options = [
   {
     label: "Chat",
@@ -17,7 +18,14 @@ const options = [
 
 const Landing = () => {
   const router = useRouter();
+  useEffect(() => {
+    const hasRefreshed = sessionStorage.getItem("hasRefreshed");
 
+    if (!hasRefreshed) {
+      sessionStorage.setItem("hasRefreshed", "true");
+      window.location.reload(); // ✅ refreshes the page once
+    }
+  }, []);
   return (
     <div
       className="relative h-screen flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat dark:bg-black"
