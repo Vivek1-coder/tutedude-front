@@ -25,7 +25,11 @@ const Chat = () => {
 
   async function GenerateNewSession() {
     isCompLoading(true);
-    const res = await axios.post("/api/chat/new-session");
+    const res = await axios.post(
+      "/api/chat/new-session",
+      {},
+      { withCredentials: true }
+    );
     isCompLoading(false);
     console.log(res);
     params.set("chatId", res.data.chatId);
@@ -36,7 +40,11 @@ const Chat = () => {
   }
   async function loadOldChat(id) {
     isCompLoading(true);
-    const res = await axios.post(`/api/chat/load-chat`, { id }, {});
+    const res = await axios.post(
+      `/api/chat/load-chat`,
+      { id },
+      { withCredentials: true }
+    );
     isCompLoading(false);
     if (res.status != 200) {
       toast("Failed to load old chat");
@@ -85,10 +93,14 @@ const Chat = () => {
       return;
     }
     console.log(chatId);
-    const res = await axios.post("/api/chat/query", {
-      query: messageContent,
-      chatId,
-    });
+    const res = await axios.post(
+      "/api/chat/query",
+      {
+        query: messageContent,
+        chatId,
+      },
+      { withCredentials: true }
+    );
     const { answer, explaination } = res.data.response;
     const aiMessage = {
       id: (Date.now() + 1).toString(),

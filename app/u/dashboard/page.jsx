@@ -52,7 +52,11 @@ const Dashboard = () => {
     console.log("ioioio");
     async function f() {
       setLoaderOld(true);
-      const res = await axios.post("/api/load-report/all");
+      const res = await axios.post(
+        "/api/load-report/all",
+        {},
+        { withCredentials: true }
+      );
       setLoaderOld(false);
       if (res.status == 200) {
         toast("Old Analysis Loaded");

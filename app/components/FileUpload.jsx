@@ -43,7 +43,9 @@ export const FileUpload = ({ onClose }) => {
     try {
       // 2. Post the FormData
       console.log("sending req.");
-      const response = await axios.post("/api/file-analyze", formData);
+      const response = await axios.post("/api/file-analyze", formData, {
+        withCredentials: true,
+      });
       const res = response.data.response;
       console.log(res);
       const { _id: id, metric, remarks } = res;

@@ -21,7 +21,11 @@ export default function LabReportDisplay({ params }) {
       const id = (await params).id;
       console.log(id);
       setLoader(true);
-      const res = await axios.post(`/api/load-report/specific`, { id });
+      const res = await axios.post(
+        `/api/load-report/specific`,
+        { id },
+        { withCredentials: true }
+      );
       setLoader(false);
       console.log(res);
       if (res.status == 200) {

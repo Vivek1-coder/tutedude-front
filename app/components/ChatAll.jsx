@@ -13,7 +13,8 @@ function ChatAll({ loadOldChat, GenerateNewSession }) {
   const deleteChat = async (chatId) => {
     try {
       const response = await axios.delete("/api/chat/delete-chat", {
-        data: { chatId }, // axios uses `data` for DELETE body
+        data: { chatId },
+        withCredentials: true, // axios uses `data` for DELETE body
       });
 
       setOldChats((prevChats) =>
@@ -33,7 +34,11 @@ function ChatAll({ loadOldChat, GenerateNewSession }) {
     const loadPrevChats = async () => {
       try {
         setIsLoading(true);
-        const res = await axios.post("/api/chat/load-prev-chats", {});
+        const res = await axios.post(
+          "/api/chat/load-prev-chats",
+          {},
+          { withCredentials: true }
+        );
         setIsLoading(false);
         setOldChats(res.data);
         if (res.data.length > 0) {
